@@ -61,8 +61,8 @@ An S4 object of class "FSVC" containing the fitted model, Accessor functions can
 +  `evalest`: estimated eigenvalues
 +  `muest`: estimated mean function
 +  `npc`: the maximum number of FPCs
-+  'svm.fit`: "ksvm" object from ksvm function
-+  'predclass`: predicted class labels
++  `svm.fit`: "ksvm" object from ksvm function
++  `predclass`: predicted class labels
 
 ### The arguments of other functions are described within R files.
  
