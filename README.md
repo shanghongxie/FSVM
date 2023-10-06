@@ -23,37 +23,45 @@ Methods to perform support vector machine on functional data for both classifica
 
 ## Code Instructions
 
-- The code for the proposed methodology is included in **ICATemporalNetwork** folder. Please download all the files in the folder to implement the method.
-  + The main function for the method is **ICATemporalNet.R** and **ICATemporalNetBoot.R** which allows bootstraps.
-  + To use **ICATemporalNet.R**, it requires **estICA.R** which estimates the non-Gaussian signals and then removes them from raw data, and **temporalNet.R** which estimates the temporal network. 
+- The code for the proposed methodology is included in **FSVM** folder. Please download all the files in the folder to implement the method.
+  + The main function for functional support vector classification (FSVC) is **FSVC.R**.
+  + The main function for functional support vector regression (FSVR) is **FSVR.R**.
 
 
  
 - **Examples** folder contains examples.
-   + **genData.R**: generate simulated data
+   + **genData_binary.R**: generate simulated data for binary outcomes
+   + **genData_continuous.R**: generate simulated data for continuous outcomes
    + **example.R**: an example to implement the method
-   + **Sim_Scenario1.R**: simulations of Scenario 1
-   + **Sim_Scenario2.R**: simulations of Scenario 2
+   + **Sim_binary.R**: simulations of binary outcomes
+   + **Sim_continous.R**: simulations of continuous outcomes
 
-### Main function: ICATemporalNet
+### Main function: FSVC
 #### Arguments
-+ `Yts`: input data, the user must supply a list of Yts, where each element is a N*K data matrix at time t. N is sample size, K is the number of nodes.
-+ `N`: sample size
-+ `Ntime`: total number of time points
-+ `ncomp`:  maximum number of independent components to be chosen
-+  `Ta`: use t<=Ta time points to estimate temporal network A
-+  `Tc`: ues t>Tc time points to estimate contemporaneous network Gamma
++ 'x' : functional data matrix, an N*Ntime matrix
++ `y': class label
++ `kernel': the kernel function
++ `Cs': the grid of regularization parameter C in SVM
++ `Ks': the grid of number of FPCs
++ `lambdas': the grid of smoothing parameter in FPCA
++ `npc': the maximum number of FPCs
++ `knots': number of knots to use or the vectors of knots in fpca.face function; defaults to 35
++ `fold': number of folds for cross-validation
++ `fit': whether to predict class labels, default to TRUE
 
 #### Value
-+ `estIC`: results from non-Gaussian estimation step. output from estICA.R
-+ `estRts`: R(t),residuals after removing non-Gaussian signals
-+ `estS`: independent components S
-+ `estUts`: non-Gaussian signals U(t)
-+ `estWt`: weight matrix w(t)
-+  `nIC`: number of independent components
-+  `A`: temporal network
-+  `Gamma`: contemporaneous network
-+  `Omega`: covariance matrix of e(t), inverse of Gamma
+An S4 object of class "FSVC" containing the fitted model, Accessor functions can be used to access the slots of the object (see examples) which include:
++ `optla`: optimal lambda parameter
++ `optc`: optimal C parameter
++ `optk`: optimal K parameter
++ `sig2est`: estimated variance from FPCA
++ `score`: estimated FPC scores
++  `eigenfest`: estimated eigenfunctions
++  `evalest`: estimated eigenvalues
++  `muest`: estimated mean function
++  `npc`: the maximum number of FPCs
++  'svm.fit': "ksvm" object from ksvm function
++  'predclass': predicted class labels
 
 ### The arguments of other functions are described within R files.
  
