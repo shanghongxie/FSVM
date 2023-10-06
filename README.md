@@ -38,16 +38,16 @@ Methods to perform support vector machine on functional data for both classifica
 
 ### Main function: FSVC
 #### Arguments
-+ 'x' : functional data matrix, an N*Ntime matrix
-+ `y': class label
-+ `kernel': the kernel function
-+ `Cs': the grid of regularization parameter C in SVM
-+ `Ks': the grid of number of FPCs
-+ `lambdas': the grid of smoothing parameter in FPCA
-+ `npc': the maximum number of FPCs
-+ `knots': number of knots to use or the vectors of knots in fpca.face function; defaults to 35
-+ `fold': number of folds for cross-validation
-+ `fit': whether to predict class labels, default to TRUE
++ `x`: functional data matrix, an N*Ntime matrix
++ `y`: class label
++ `kernel`: the kernel function
++ `Cs`: the grid of regularization parameter C in SVM
++ `Ks`: the grid of number of FPCs
++ `lambdas`: the grid of smoothing parameter in FPCA
++ `npc`: the maximum number of FPCs
++ `knots`: number of knots to use or the vectors of knots in fpca.face function; defaults to 35
++ `fold`: number of folds for cross-validation
++ `fit`: whether to predict class labels, default to TRUE
 
 #### Value
 An S4 object of class "FSVC" containing the fitted model, Accessor functions can be used to access the slots of the object (see examples) which include:
@@ -60,8 +60,8 @@ An S4 object of class "FSVC" containing the fitted model, Accessor functions can
 +  `evalest`: estimated eigenvalues
 +  `muest`: estimated mean function
 +  `npc`: the maximum number of FPCs
-+  'svm.fit': "ksvm" object from ksvm function
-+  'predclass': predicted class labels
++  'svm.fit`: "ksvm" object from ksvm function
++  'predclass`: predicted class labels
 
 ### The arguments of other functions are described within R files.
  
