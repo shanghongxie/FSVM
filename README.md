@@ -36,7 +36,8 @@ Methods to perform support vector machine on functional data for both classifica
    + **Sim_binary.R**: simulations of binary outcomes
    + **Sim_continous.R**: simulations of continuous outcomes
 
-### Main function: FSVC
+### Main functions: 
+### FSVC
 #### Arguments
 + `x`: functional data matrix, an N*Ntime matrix
 + `y`: class label
