@@ -24,7 +24,7 @@ for (iSim in 1:nSim){
   x = t(output$discrete_data) ## N*Ntime
   y = output$trainy
   
-  fit = FSVR(x, y, kernel = "rbfdot", Cs = Cs, Ks, smoothers, npc = 5, knots = 35, fold = 5, fit = TRUE)   
+  fit = FSVR(x, y, kernel = "rbfdot", Ks, smoothers, Cs = Cs, nus = nus, npc = 5, knots = 35, fold = 5, fit = TRUE)   
   opt.k = fit@optk
   opt.s = fit@opts
   opt.c = fit@optc

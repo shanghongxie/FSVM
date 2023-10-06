@@ -65,14 +65,14 @@ setClass("FSVC", slots = list(opts = "numeric", optc = "numeric",
 
 setGeneric("FSVC", function(x, ...) standardGeneric("FSVC"))
 setMethod("FSVC",signature(x = "matrix"),
-FSVC <- function(x, y, kernel = "rbfdot", Cs = 1, Ks, smoothers, npc = 5, knots = 35, fold = 5, fit = TRUE){
+FSVC <- function(x, y, kernel = "rbfdot", Ks, smoothers, Cs = 1, npc = 5, knots = 35, fold = 5, fit = TRUE){
   
   # x: functional data matrix, an N*Ntime matrix
   # y: class label
-  # kernel: the kernel function
-  # Cs: the grid of regularization parameter C in SVM
+  # kernel: the kernel function. rbfdot: Gaussian kernel, vanilladot: linear kernel
   # Ks: the grid of number of FPCs
   # smoothers: the grid of smoothing parameter in FPCA
+  # Cs: the grid of regularization parameter C in SVC
   # npc: the maximum number of FPCs
   # knots: number of knots to use or the vectors of knots in fpca.face function; defaults to 35
   # fold: number of folds for cross-validation

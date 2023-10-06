@@ -41,7 +41,7 @@ Cs = seq(0.01, 1, length.out = 5)
 npc = 5
 Ks = 1:5
 
-fit = FSVC(x, y, kernel = "rbfdot", Cs = Cs, Ks, smoothers, npc = 5, knots = 35, fold = 5, fit = TRUE)  
+fit = FSVC(x, y, kernel = "rbfdot",  Ks, smoothers, Cs = Cs, npc = 5, knots = 35, fold = 5, fit = TRUE)  
 opt.k = fit@optk
 opt.s = fit@opts
 opt.c = fit@optc
@@ -106,7 +106,7 @@ Ks = 1:5
 nus = c(0.1, 0.3, 0.5, 0.8)
 Cs = seq(0.01, 1, length.out = 5)
 
-fit = FSVR(x, y, kernel = "rbfdot", Cs = Cs, Ks, smoothers, npc = 5, knots = 35, fold = 5, fit = TRUE)  
+fit = FSVR(x, y, kernel = "rbfdot", Ks, smoothers, Cs = Cs, nus = nus, npc = 5, knots = 35, fold = 5, fit = TRUE)  
 opt.k = fit@optk
 opt.s = fit@opts
 opt.c = fit@optc

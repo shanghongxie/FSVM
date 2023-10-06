@@ -2,7 +2,7 @@
 
 source("FSVC.R")
 
-lambdas = c(0.5,1,5,10)
+smoothers = c(0.5,1,5,10)
 Cs = seq(0.01, 1, length.out = 5)
 npc = 5
 Ks = 1:5
@@ -19,7 +19,7 @@ for (iSim in 1:nSim){
   x = t(output$discrete_data) ## N*Ntime
   y = output$trainclass
   
-  fit = FSVC(x, y, kernel = "rbfdot", Cs = Cs, Ks, lambdas, npc = 5, knots = 35, fold = 5, fit = TRUE)  
+  fit = FSVC(x, y, kernel = "rbfdot", Ks, smoothers, Cs = Cs,  npc = 5, knots = 35, fold = 5, fit = TRUE)  
   opt.k = fit@optk
   opt.la = fit@optla
   opt.c = fit@optc
