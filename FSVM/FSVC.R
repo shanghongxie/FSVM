@@ -1,3 +1,5 @@
+### Perform functional support vector classification for binary outcomes
+
 ## Estimate FPC scores
 estPCscore <- function(Y, npc, mu, sigma2, evalues, efunctions){
   
@@ -41,7 +43,7 @@ SVM <- function(score, class,  K, fold=5, C=1:10, kpar,kernel = "rbfdot"){
   # fold: number of folds for cross-validation
   # C: regularization parameter in SVM
   # kpar: the list of hyper-parameters (kernel parameters) in ksvm function
-  # kernel: the kernel function in ksvm function
+  # kernel: the kernel function in ksvm function. rbfdot: Gaussian kernel, vanilladot: linear kernel
   
   library(kernlab)
   
@@ -55,7 +57,7 @@ SVM <- function(score, class,  K, fold=5, C=1:10, kpar,kernel = "rbfdot"){
 }
 
 ## Perform functional support vector classification
-setClass("FSVC", slots = list(optla = "numeric", optc = "numeric",
+setClass("FSVC", slots = list(opts = "numeric", optc = "numeric",
          optk = "numeric", sig2est = "numeric",
          score = "matrix", eigenfest = "matrix",
          evalest = "vector", muest = "vector",  npc = "numeric", svm.fit = "ANY", predclass = "ANY", accuracy = "numeric")
@@ -63,14 +65,14 @@ setClass("FSVC", slots = list(optla = "numeric", optc = "numeric",
 
 setGeneric("FSVC", function(x, ...) standardGeneric("FSVC"))
 setMethod("FSVC",signature(x = "matrix"),
-FSVC <- function(x, y, kernel = "rbfdot", Cs = 1, Ks, lambdas, npc = 5, knots = 35, fold = 10, fit = TRUE){
+FSVC <- function(x, y, kernel = "rbfdot", Cs = 1, Ks, smoothers, npc = 5, knots = 35, fold = 5, fit = TRUE){
   
   # x: functional data matrix, an N*Ntime matrix
   # y: class label
   # kernel: the kernel function
   # Cs: the grid of regularization parameter C in SVM
   # Ks: the grid of number of FPCs
-  # lambdas: the grid of smoothing parameter in FPCA
+  # smoothers: the grid of smoothing parameter in FPCA
   # npc: the maximum number of FPCs
   # knots: number of knots to use or the vectors of knots in fpca.face function; defaults to 35
   # fold: number of folds for cross-validation
@@ -80,16 +82,16 @@ FSVC <- function(x, y, kernel = "rbfdot", Cs = 1, Ks, lambdas, npc = 5, knots = 
   
   ret <- new("FSVC")
   
-  ### do cross-validation, tuning parameters: C, smoothing parameter lambda, number of components
+  ### do cross-validation, tuning parameters: C, smoothing parameter smoother, number of components
   ### split data 
   m = length(y)
   vgr <- split(sample(1:m,m),1:fold)
   
   sr = 1
-  accuracys = matrix(0,length(lambdas),length(Cs))
+  accuracys = matrix(0,length(smoothers),length(Cs))
   indexk = NULL
   indexsr = NULL
-  for (la in 1:length(lambdas)){
+  for (s in 1:length(smoothers)){
     for (c in 1:length(Cs)){
       accuracy = rep(0, length(Ks))
       
@@ -97,7 +99,7 @@ FSVC <- function(x, y, kernel = "rbfdot", Cs = 1, Ks, lambdas, npc = 5, knots = 
         
         cind <-  unsplit(vgr[-i],factor(rep((1:fold)[-i],unlist(lapply(vgr[-i],length)))))
         
-        pca.fit <- fpca.face(Y = x[cind,], var = TRUE, simul = F, npc = npc, lambda = lambdas[la], knots = knots)
+        pca.fit <- fpca.face(Y = x[cind,], var = TRUE, simul = F, npc = npc, lambda = smoothers[s], knots = knots)
         
         sig2est.cv = pca.fit$sigma2
         score.cv = pca.fit$scores
@@ -122,28 +124,28 @@ FSVC <- function(x, y, kernel = "rbfdot", Cs = 1, Ks, lambdas, npc = 5, knots = 
         } ## end of k
         
       }## end of fold
-      accuracys[la,c] = max(accuracy)
+      accuracys[s,c] = max(accuracy)
       indexk = c(indexk, which.max(accuracy))
       
-      indexsr = rbind(indexsr, c(la, c, sr))
+      indexsr = rbind(indexsr, c(s, c, sr))
       
       sr = sr + 1
       
     } ## end of c
-  } ## end of lambda
+  } ## end of smoother
   
   indexs = which(accuracys == max(accuracys), arr.ind = TRUE)
   
   ## optimal tuning parameters
-  opt.la = lambdas[indexs[1,1]]; opt.c = Cs[indexs[1,2]]; opt.k = Ks[indexk[which(indexsr[,1]==indexs[1,1] & indexsr[,2]==indexs[1,2])]]
+  opt.s = smoothers[indexs[1,1]]; opt.c = Cs[indexs[1,2]]; opt.k = Ks[indexk[which(indexsr[,1]==indexs[1,1] & indexsr[,2]==indexs[1,2])]]
   
-  ret@optla <- opt.la
+  ret@opts <- opt.s
   ret@optc <- opt.c
   ret@optk <- opt.k
   
   
   ## refit on data
-  pca.fit <- fpca.face(Y=x, var = TRUE, simul = F, npc = npc, lambda = opt.la, knots = knots)
+  pca.fit <- fpca.face(Y=x, var = TRUE, simul = F, npc = npc, lambda = opt.s, knots = knots)
   
   sig2est = pca.fit$sigma2
   score = pca.fit$scores
@@ -187,7 +189,8 @@ setMethod("predict", signature(object = "FSVC"),
           {
             type <- match.arg(type,c("response","probabilities"))
             
-            newdata = as.matrix(newdata)
+            if (is.vector(newdata)) t(t(newdata)) else as.matrix(newdata)
+       
             newnrows <- nrow(newdata)
             newncols <- ncol(newdata)
             
@@ -197,10 +200,19 @@ setMethod("predict", signature(object = "FSVC"),
             
             #### Perform SVM on data 
             opt.k = object@optk
-            predclass <- predict(svm.fit, as.matrix(estscore[,1:opt.k]))
+            if (type == "response"){
+              predclass <- predict(svm.fit, as.matrix(estscore[,1:opt.k]))
+  
+              return(predclass)
+            }
             
-            return(predclass)
-          }
+            if (type == "probabilities"){
+              predprob <- predict(svm.fit,as.matrix(estscore[,1:opt.k]), type = "probabilities")
+            
+              return(predprob)
+            
+            }
+      }
 )
             
 
