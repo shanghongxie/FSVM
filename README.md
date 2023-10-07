@@ -77,7 +77,7 @@ An S4 object of class "FSVC" containing the fitted model, Accessor functions can
 + `npc`: the maximum number of FPCs
 + `knots`: number of knots to use or the vectors of knots in fpca.face function; defaults to 35
 + `fold`: number of folds for cross-validation
-+ `fit`: whether to predict class labels, default to TRUE
++ `fit`: whether to predict y, default to TRUE
 
 #### Value
 An S4 object of class "FSVR" containing the fitted model, Accessor functions can be used to access the slots of the object (see examples) which include:
