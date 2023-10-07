@@ -65,7 +65,7 @@ setClass("FSVC", slots = list(opts = "numeric", optc = "numeric",
 
 setGeneric("FSVC", function(x, ...) standardGeneric("FSVC"))
 setMethod("FSVC",signature(x = "matrix"),
-FSVC <- function(x, y, kernel = "rbfdot", Ks, smoothers, Cs = 1, npc = 5, knots = 35, fold = 5, fit = TRUE){
+FSVC <- function(x = NULL, y = NULL, kernel = "rbfdot", Ks = NULL, smoothers = NULL, Cs = 1, npc = 5, knots = 35, fold = 5, fit = TRUE){
   
   # x: functional data matrix, an N*Ntime matrix
   # y: class label

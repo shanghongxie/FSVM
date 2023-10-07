@@ -67,7 +67,7 @@ setClass("FSVR", slots = list(opts = "numeric", optc = "numeric",
 
 setGeneric("FSVR", function(x, ...) standardGeneric("FSVR"))
 setMethod("FSVR",signature(x = "matrix"),
-          FSVR <- function(x, y, kernel = "rbfdot",  Ks, smoothers, Cs = 1, nus, npc = 5, knots = 35, fold = 5, fit = TRUE){
+          FSVR <- function(x = NULL, y = NULL, kernel = "rbfdot",  Ks = NULL, smoothers = NULL, Cs = 1, nus = NULL, npc = 5, knots = 35, fold = 5, fit = TRUE){
             
             # x: functional data matrix, an N*Ntime matrix
             # y: class label
