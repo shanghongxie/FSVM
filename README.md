@@ -3,7 +3,7 @@
 
 <img src="https://img.shields.io/badge/Study%20Status-Results%20Available-yellow.svg" alt="Study Status: Results Available"> 
 
-Methods to perform support vector machine on functional data for both classification and regression problems.
+Methods to perform functional support vector machine for both classification and regression problems.
 
 
 - Title: **Functional Support Vector Machine**
