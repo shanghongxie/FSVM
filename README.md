@@ -66,6 +66,7 @@ An S4 object of class "FSVC" containing the fitted model, Accessor functions can
 +  `accuracy`: classification accuracy on fitted data if fit = TRUE
 
 #### Examples
+```
 source("genData.R")
 source("FSVC.R")
 
@@ -124,7 +125,7 @@ testclass = testdata$classlabel
 
 predtest = predict(fit, newdata = newdata)
 accuracy = sum(predtest == testclass)/Ntest
-
+```
 
 ### FSVR
 #### Arguments
