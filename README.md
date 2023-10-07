@@ -38,6 +38,9 @@ Methods to perform support vector machine on functional data for both classifica
 
 ### Main functions: 
 ### FSVC
+#### Usage
+FSVC(x = NULL, y = NULL, kernel = "rbfdot", Ks = NULL, smoothers = NULL, Cs = 1, npc = 5, knots = 35, fold = 5, fit = TRUE)
+
 #### Arguments
 + `x`: functional data matrix, an N*Ntime matrix
 + `y`: class label
