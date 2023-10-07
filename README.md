@@ -149,7 +149,7 @@ FSVR(x = NULL, y = NULL, kernel = "rbfdot",  Ks = NULL, smoothers = NULL, Cs = 1
 
 #### Value
 An S4 object of class "FSVR" containing the fitted model, Accessor functions can be used to access the slots of the object (see examples) which include:
-+ `optS`: optimal smoothing parameter
++ `opts`: optimal smoothing parameter
 + `optc`: optimal C parameter
 + `optk`: optimal K parameter
 + `optnu`: optimal nu parameter
