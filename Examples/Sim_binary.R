@@ -8,7 +8,7 @@ npc = 5
 Ks = 1:5
 accuracys = NULL
 opt.Ks = NULL
-opt.las = NULL
+opt.ss = NULL
 opt.Cs = NULL
 
 nSim = 100
@@ -21,11 +21,11 @@ for (iSim in 1:nSim){
   
   fit = FSVC(x, y, kernel = "rbfdot", Ks, smoothers, Cs = Cs,  npc = 5, knots = 35, fold = 5, fit = TRUE)  
   opt.k = fit@optk
-  opt.la = fit@optla
+  opt.s = fit@opts
   opt.c = fit@optc
   
   opt.Ks = c(opt.Ks, opt.k)
-  opt.las = c(opt.las, opt.la)
+  opt.ss = c(opt.ss, opt.s)
   opt.Cs = c(opt.Cs, opt.c)
   
   predtest = predict(fit, t(test_discrete))
