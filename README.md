@@ -34,7 +34,9 @@ Methods to perform functional support vector machine for both classification and
    + **SimData_continuous.R**: generate data for continuous outcomes in the simulation studies
    + **example.R**: examples to implement the method for both binary and continuous outcomes
    + **Sim_binary.R**: run simulations of binary outcomes. Need first use SimData_binary.R to generate data
-   + **Sim_continous.R**: run simulations of continuous outcomes. Need first use SimData_continuous.R to generate data
+   + **Sim_continuous.R**: run simulations of continuous outcomes. Need first use SimData_continuous.R to generate data
+   + **RealData_binary.R**: binary outcome real data application of EEG data set
+   + **RealData_continuous.R**: continuous outcome real data application of NIRS data set
 
 ### Main functions: 
 ### FSVC
